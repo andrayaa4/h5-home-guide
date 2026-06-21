@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简明指南 · 乐鱼体育</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans SC', 'Helvetica Neue', sans-serif;
+            background: #f7f3ed;
+            color: #2b2a28;
+            line-height: 1.7;
+            padding: 1.8rem 1rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page-wrap {
+            max-width: 860px;
+            width: 100%;
+            background: #fdfcf9;
+            border-radius: 32px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            padding: 2.2rem 2rem 3.2rem;
+        }
+
+        /* hero 区域 – 主视觉卡片 */
+        .hero-card {
+            background: linear-gradient(145deg, #f2ede2 0%, #e9e1d3 100%);
+            border-radius: 28px;
+            padding: 2.2rem 2rem 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        .hero-card h1 {
+            font-size: 2.1rem;
+            font-weight: 550;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: #1f1e1b;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-card .sub {
+            font-size: 1rem;
+            color: #5b564b;
+            border-left: 3px solid #b8aa90;
+            padding-left: 1rem;
+            margin-top: 0.4rem;
+            font-style: normal;
+        }
+
+        .hero-card .badge-line {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(2px);
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            color: #3f3b33;
+            font-weight: 480;
+            letter-spacing: 0.01em;
+        }
+
+        /* 通用卡片 米白底色+微阴影 */
+        .info-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 1.6rem 1.8rem 1.8rem;
+            margin-bottom: 1.6rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02), 0 0 0 1px #ece6dd;
+        }
+
+        .info-card h2 {
+            font-size: 1.4rem;
+            font-weight: 520;
+            color: #2a2620;
+            letter-spacing: -0.01em;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid #ede7de;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .info-card h2::before {
+            content: "▫";
+            color: #b3a185;
+            font-size: 1.8rem;
+            line-height: 1;
+            margin-right: 0.2rem;
+        }
+
+        .info-card ul, .info-card p {
+            font-size: 0.98rem;
+            color: #3d3931;
+        }
+
+        .info-card ul {
+            padding-left: 1.2rem;
+            list-style: none;
+        }
+
+        .info-card li {
+            position: relative;
+            padding-left: 1.2rem;
+            margin-bottom: 0.45rem;
+        }
+
+        .info-card li::before {
+            content: "·";
+            position: absolute;
+            left: 0.1rem;
+            color: #9b8c75;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        /* 引用框 / 提示块 */
+        .notice-block {
+            background: #f5efe7;
+            border-left: 6px solid #c6b59c;
+            border-radius: 0 18px 18px 0;
+            padding: 1rem 1.5rem;
+            margin: 1.8rem 0 2rem;
+            font-size: 0.95rem;
+            line-height: 1.65;
+            color: #3d382f;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.01);
+        }
+
+        .notice-block strong {
+            color: #2c261b;
+            font-weight: 520;
+        }
+
+        /* 两栏布局（适合人群+场景） */
+        .split-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.4rem;
+            margin: 1.5rem 0;
+        }
+
+        .split-grid .info-card {
+            margin-bottom: 0;
+            height: fit-content;
+        }
+
+        /* 自然链接段落专用卡片 */
+        .link-card {
+            background: #faf7f2;
+            border-radius: 20px;
+            padding: 1.6rem 1.8rem 1.8rem;
+            margin: 1.2rem 0 0.6rem;
+            border: 1px solid #e2d9cd;
+        }
+
+        .link-card p {
+            font-size: 0.98rem;
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: #725f44;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 0.5px;
+            text-decoration-color: #c2b099;
+            transition: color 0.15s, text-decoration-color 0.15s;
+        }
+
+        a:hover {
+            color: #4a3c2b;
+            text-decoration-color: #4a3c2b;
+        }
+
+        /* faq 摘要 */
+        .faq-mini {
+            background: #f3ede5;
+            border-radius: 28px;
+            padding: 1.4rem 1.6rem 1.6rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .faq-mini h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #2c2821;
+            margin-bottom: 0.8rem;
+        }
+
+        .faq-item {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 0.6rem;
+            font-size: 0.92rem;
+        }
+
+        .faq-item .q {
+            color: #7b6e5b;
+            font-weight: 480;
+            flex-shrink: 0;
+        }
+
+        .faq-item .a {
+            color: #3b362e;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #e2d9cd;
+            margin: 2rem 0 1.2rem;
+        }
+
+        .footer-note {
+            text-align: left;
+            font-size: 0.82rem;
+            color: #8c8375;
+            margin-top: 2.2rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid #e7dfd3;
+            letter-spacing: 0.01em;
+        }
+
+        /* 响应式 */
+        @media (max-width: 640px) {
+            .page-wrap {
+                padding: 1.4rem 1rem 2rem;
+                border-radius: 24px;
+            }
+
+            .hero-card {
+                padding: 1.5rem 1rem 1.4rem;
+            }
+
+            .hero-card h1 {
+                font-size: 1.7rem;
+            }
+
+            .split-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+
+            .info-card {
+                padding: 1.2rem 1.2rem 1.4rem;
+            }
+
+            .link-card {
+                padding: 1.2rem 1.2rem 1.4rem;
+            }
+
+            .badge-line {
+                gap: 0.4rem 0.6rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .hero-card h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrap">
+
+    <!-- 主视觉卡片 -->
+    <div class="hero-card">
+        <h1>乐鱼体育 · 简明访问指南</h1>
+        <div class="sub">日常运动与资讯聚合，从一处开始</div>
+        <div class="badge-line">
+            <span class="badge">信息卡片式</span>
+            <span class="badge">生活化提醒</span>
+            <span class="badge">适合多数场景</span>
+        </div>
+    </div>
+
+    <!-- 用途卡片：简明指南 -->
+    <div class="info-card">
+        <h2>这份指南在说什么</h2>
+        <p>我们不罗列复杂的功能清单。下面几张卡片帮你快速了解 <a href="https://h5-home-leyu.com.cn">乐鱼体育</a> 在日常中能做什么、谁更适合用、以及访问时需要注意什么。内容基于普遍使用体验整理，不做绝对承诺，只做真实参考。</p>
+    </div>
+
+    <!-- 两栏：适合人群 + 日常场景 -->
+    <div class="split-grid">
+        <div class="info-card">
+            <h2>适合谁</h2>
+            <ul>
+                <li>想随时浏览体育资讯的爱好者</li>
+                <li>偶尔关注赛事结果与动态的休闲用户</li>
+                <li>希望在一个页面里找到多个运动模块的人</li>
+                <li>对页面简洁度有要求、不喜欢过度广告的访客</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h2>常见用途</h2>
+            <ul>
+                <li>快速查阅体育类信息与内容摘要</li>
+                <li>作为体育资讯的日常补充参考</li>
+                <li>在移动端或电脑上获得一致的浏览体验</li>
+                <li>通过一个集中入口了解不同运动项目</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 提示框：访问提醒 -->
+    <div class="notice-block">
+        <strong>📌 访问提醒</strong><br>
+        · 建议使用常规网络环境访问，保持浏览器版本更新。<br>
+        · 页面内容以实际展示为准，功能与界面可能因版本调整有所变化。<br>
+        · 如遇到加载异常，可稍后重试或检查网络连接。<br>
+        · 本页面为信息介绍页，不代收任何费用，也不收集个人信息。
+    </div>
+
+    <!-- 自然链接段落（嵌入链接） -->
+    <div class="link-card">
+        <p>如果你想直接浏览体育相关的内容模块，可以通过 <a href="https://h5-home-leyu.com.cn">乐鱼体育</a> 进入。整个页面以信息聚合的方式呈现，适合在日常间隙随手翻阅。没有强制注册或下载的要求，打开即可看到卡片式的内容布局。</p>
+        <p style="margin-top: 0.8rem;">需要留意的是，部分动态区域可能依赖 JavaScript 加载，如果遇到显示不完整，可以尝试刷新或检查浏览器设置。页面本身保持轻量结构，加载速度表现比较稳定。</p>
+    </div>
+
+    <!-- FAQ 摘要 -->
+    <div class="faq-mini">
+        <h3>▎常见疑问摘要</h3>
+        <div class="faq-item">
+            <span class="q">问：</span>
+            <span class="a">是否需要注册账号？—— 浏览基本信息通常不需要注册，部分深度交互功能视页面设定而定。</span>
+        </div>
+        <div class="faq-item">
+            <span class="q">问：</span>
+            <span class="a">手机和电脑都能用吗？—— 页面自适应，两种设备均可正常查看，推荐使用竖屏模式。</span>
+        </div>
+        <div class="faq-item">
+            <span class="q">问：</span>
+            <span class="a">内容更新频率如何？—— 日常维护更新，具体节奏以页面实际显示为准，无固定时间表。</span>
+        </div>
+        <div class="faq-item">
+            <span class="q">问：</span>
+            <span class="a">链接安全吗？—— 链接指向 https 站点，建议自行判断网络环境，保护好个人设备。</span>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="footer-note">
+        本页为信息介绍卡片，内容基于公开体验整理，仅供自然参考，不构成任何建议或担保。
+    </div>
+
+</div>
+</body>
+</html>
