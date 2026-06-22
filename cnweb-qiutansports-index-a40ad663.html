@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>球探比分 · 数据驱动的赛场信息卡片</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background-color: #f2f4f7;
+            color: #1e293b;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .page {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* Hero 区域 */
+        .hero {
+            text-align: center;
+            padding: 3rem 1rem 2rem;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+            margin-bottom: 2.5rem;
+            border: 1px solid #e9edf2;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: #0b1e33;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(145deg, #2563eb, #1d4ed8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            max-width: 640px;
+            margin: 1rem auto 0;
+            font-size: 1.1rem;
+            color: #475569;
+        }
+
+        /* 通用卡片网格 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+
+        @media (min-width: 640px) {
+            .card-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .card-grid.cols-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 1.75rem 1.5rem;
+            border: 1px solid #e6ebf2;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03), 0 6px 20px rgba(0,0,0,0.02);
+            transition: box-shadow 0.2s, transform 0.1s;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+
+        .card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.65rem;
+            color: #0b1e33;
+        }
+
+        .card p, .card ul {
+            font-size: 0.96rem;
+            color: #3c4a5e;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card ul li {
+            position: relative;
+            padding-left: 1.2rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .card ul li::before {
+            content: "·";
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        /* 链接句子卡片 */
+        .link-card {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #e6ebf2;
+            padding: 2rem 2rem 2.2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            margin: 2rem 0;
+        }
+
+        .link-card p {
+            font-size: 1.08rem;
+            line-height: 1.7;
+            color: #1e293b;
+        }
+
+        .link-card a {
+            color: #2563eb;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .link-card a:hover {
+            border-bottom-color: #2563eb;
+        }
+
+        /* 人群网格（三列） */
+        .audience-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+
+        @media (min-width: 600px) {
+            .audience-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 960px) {
+            .audience-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .audience-item {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1.5rem 1.2rem;
+            border: 1px solid #e6ebf2;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .audience-item h4 {
+            font-weight: 600;
+            font-size: 1.08rem;
+            margin-bottom: 0.3rem;
+            color: #0b1e33;
+        }
+
+        .audience-item p {
+            font-size: 0.92rem;
+            color: #3c4a5e;
+        }
+
+        /* 分隔标题 */
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #0b1e33;
+            margin: 2.2rem 0 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .section-sub {
+            font-size: 1rem;
+            color: #5b6f87;
+            margin-top: -0.5rem;
+            margin-bottom: 1.8rem;
+        }
+
+        /* FAQ 摘要 */
+        .faq-mini {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #e6ebf2;
+            padding: 1.8rem 1.8rem 2rem;
+            margin: 2.5rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .faq-mini details {
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid #f0f2f5;
+            padding-bottom: 0.75rem;
+        }
+
+        .faq-mini details:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .faq-mini summary {
+            font-weight: 500;
+            cursor: pointer;
+            color: #1e293b;
+            padding: 0.3rem 0;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .faq-mini summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-mini summary::before {
+            content: "▸";
+            color: #2563eb;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+        }
+
+        .faq-mini details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .faq-mini .answer {
+            padding: 0.5rem 0 0.25rem 1.2rem;
+            color: #475569;
+            font-size: 0.92rem;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin: 3rem 0 1rem;
+            font-size: 0.9rem;
+            color: #7f8ea3;
+            border-top: 1px solid #e0e6ed;
+            padding-top: 2rem;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: #eef2f9;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #1e3a5f;
+            margin-right: 0.4rem;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #e0e6ed;
+            margin: 2rem 0;
+        }
+
+        /* 响应式微调 */
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .card, .link-card, .faq-mini {
+                padding-left: 1.2rem;
+                padding-right: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <!-- Hero 主视觉 -->
+        <div class="hero">
+            <h1><span>球探比分</span> · 实时赛场情报站</h1>
+            <p>从赛事数据到战术脉络，用信息卡片的方式构建你的比赛认知。无论关注欧洲足球、篮球联赛还是小众赛事，这里提供结构化的比分与动态。</p>
+        </div>
+
+        <!-- 用途卡片（信息卡片式） -->
+        <div class="section-title">用途卡片：赛场信息的三个切面</div>
+        <div class="card-grid">
+            <div class="card">
+                <div class="icon">📊</div>
+                <h3>实时比分与进程</h3>
+                <p>覆盖主流联赛、杯赛及国际赛事，进球、红黄牌、换人信息以时间线呈现。支持多场同时追踪，快速掌握关键节点。</p>
+            </div>
+            <div class="card">
+                <div class="icon">🧩</div>
+                <h3>数据对比与走势</h3>
+                <p>整合控球率、射门次数、角球等基础统计，部分赛事提供预期进球(xG)与防守指标，辅助判断比赛节奏。</p>
+            </div>
+            <div class="card">
+                <div class="icon">🔍</div>
+                <h3>历史交锋与记录</h3>
+                <p>查阅对阵双方过往交手战绩、近期状态及主客场差异。数据可回溯至多个赛季，适合赛前研究与复盘。</p>
+            </div>
+        </div>
+
+        <!-- 自然链接段落 -->
+        <div class="link-card">
+            <p>
+                对于习惯从数据层面理解比赛的球迷来说，<a href="https://cnweb-qiutansports.com">球探比分</a>提供了一个结构化的信息入口——它将繁杂的实时数据整理为可浏览的卡片与列表，让用户不必在多个页面间来回切换。无论你想快速确认某场比分，还是对比两支球队的近期走势，都可以通过这个平台找到对应的数据模块。页面设计偏重阅读效率，减少无关干扰。
+            </p>
+        </div>
+
+        <!-- 适合人群（三个群体） -->
+        <div class="section-title">适合人群</div>
+        <div class="section-sub">不同使用场景下的典型用户</div>
+        <div class="audience-grid">
+            <div class="audience-item">
+                <h4>📆 日常观赛者</h4>
+                <p>关注五大联赛及欧冠，希望在一个页面内浏览多场比分、进球时间与红黄牌，省去逐个搜索的精力。</p>
+            </div>
+            <div class="audience-item">
+                <h4>📈 数据爱好者</h4>
+                <p>对射门、控球、犯规等统计数据感兴趣，习惯结合历史交锋记录分析球队状态与对抗走势。</p>
+            </div>
+            <div class="audience-item">
+                <h4>⚽ 泛体育迷</h4>
+                <p>除了足球，也留意篮球、网球等赛事比分。平台覆盖多个体育种类，满足跨赛事的快速浏览需求。</p>
+            </div>
+        </div>
+
+        <!-- 提示卡片（特征说明） -->
+        <div class="card-grid" style="margin-top: 1rem;">
+            <div class="card">
+                <h3>⚙️ 使用提示</h3>
+                <ul>
+                    <li>赛事列表默认按时间倒序排列，可筛选联赛或日期</li>
+                    <li>点击比分卡片可展开该场详细数据（如有）</li>
+                    <li>部分统计项在赛前30分钟陆续更新</li>
+                    <li>移动端适配良好，横竖屏均可浏览</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🧠 知识向参考</h3>
+                <p>比赛数据的解读需要结合场上实际状况。例如高控球率不一定转化为进球，射正次数与防守阵型也有关系。建议将比分与统计视作辅助信息，而非唯一判断标准。</p>
+            </div>
+        </div>
+
+        <!-- FAQ 摘要（两个常见问题） -->
+        <div class="faq-mini">
+            <h3 style="font-weight: 600; margin-bottom: 1rem; color: #0b1e33;">常见疑问摘要</h3>
+            <details>
+                <summary>数据更新的频率如何？</summary>
+                <div class="answer">比分和关键事件通常在官方信号发出后数十秒内更新。统计类数据（射门、角球等）会在每次死球后刷新，半场和全场结束后生成完整统计。</div>
+            </details>
+            <details>
+                <summary>是否覆盖低级别联赛或女足赛事？</summary>
+                <div class="answer">覆盖范围包含欧洲主要联赛、次级联赛及部分杯赛。女足方面涵盖世界杯、欧洲杯及顶级联赛。具体赛事列表可在顶部导航的「联赛」分类中查看。</div>
+            </details>
+        </div>
+
+        <!-- 结尾 -->
+        <div class="footer-note">
+            <span class="badge-tag">信息卡片式设计</span>
+            <span class="badge-tag">浅灰背景</span>
+            <span class="badge-tag">细边框柔和阴影</span>
+            <br><br>
+            页面内容仅供知识性参考 · 数据以实际赛事为准
+        </div>
+
+    </div>
+</body>
+</html>
